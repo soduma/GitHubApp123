@@ -19,7 +19,10 @@ class MainListCell: UITableViewCell {
 }
 
 extension MainListCell {
-    func setUp() {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        print("setup okok?????")
         [nameLabel, descriptionLabel, starImageView, starLabel, languageLabel]
             .forEach { addSubview($0) }
         

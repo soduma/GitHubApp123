@@ -20,7 +20,6 @@ class MainViewController: UITableViewController {
         navigationItem.title = organization + " Repository"
         tableView.register(MainListCell.self, forCellReuseIdentifier: "MainListCell")
         tableView.rowHeight = 140
-        tableView.separatorStyle = .none
         
         setUpRefreshControl()
         fetchRepositories(of: organization)
@@ -59,7 +58,6 @@ class MainViewController: UITableViewController {
                 return 200...299 ~= response.statusCode
             }
             .map { _, data -> [[String: Any]] in
-//                guard let json = try? JSONDecoder().decode(Repository.self, from: data) else { return [[:]]}
                 guard let json = try? JSONSerialization.jsonObject(with: data, options: []),
                       let result = json as? [[String: Any]] else {
                     return []
@@ -75,7 +73,7 @@ class MainViewController: UITableViewController {
                     guard let id = dic["id"] as? Int,
                           let name = dic["name"] as? String,
                           let description = dic["description"] as? String,
-                          let starCount = dic["starCount"] as? Int,
+                          let starCount = dic["stargazers_count"] as? Int, // 여기가 문제였음
                           let language = dic["language"] as? String else {
                               return nil
                           }
@@ -115,7 +113,7 @@ extension MainViewController {
                 return nil
             }
         }
-        cell.setUp()
+//        cell.setUp()
         cell.repository = currentRepo
         return cell
     }
